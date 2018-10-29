@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  webspa:
+    image: tensor-snake/webspa
+    build:
+      context: .
+      dockerfile: src/WebApps/WebSPA/Dockerfile
+    volumes:
+      - './src/WebApps/WebSPA:/usr/src/app'
+      - '/usr/src/app/node_modules'
