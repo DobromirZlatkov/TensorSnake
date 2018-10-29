@@ -7,3 +7,10 @@ services:
     ports:
       - '3000:3000'
     
+  identity.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - NpgConnectionString=${TENSOR_SNAKE_IDENTITY_DB:-User ID = postgres;Password=56;Server=172.31.224.1;Port=5432;Database=TensorSnake.identity.db;Integrated Security=true; Pooling=true}
+      - SpaClient=http://localhost:3000
+    ports:
+      - "3105:80"
