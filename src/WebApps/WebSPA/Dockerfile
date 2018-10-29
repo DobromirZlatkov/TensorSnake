@@ -1,5 +1,5 @@
 # base image
-FROM node:9.6.1
+FROM node:9.6.1 as builder
 
 # set working directory
 RUN mkdir /usr/src/app
@@ -14,7 +14,9 @@ COPY /src/WebApps/WebSPA/package.json /usr/src/app/package.json
 RUN npm install
 RUN npm install react-scripts@1.1.1 -g
 
+COPY ./src/WebApps/WebSPA/ /usr/src/app
 
+RUN npm run build
 
 # start app
 CMD ["npm", "start"]
