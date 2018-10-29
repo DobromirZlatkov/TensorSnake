@@ -33,7 +33,7 @@ jobs:
       # deploy the image
       - run: |
          docker login --username=$HEROKU_USERNAME --password=$HEROKU_API_KEY registry.heroku.com
-         docker tag anteyasid/webmvc registry.heroku.com/$HEROKU_WEB_SPA_NAME/web
+         docker tag tensor-snake/webspa registry.heroku.com/$HEROKU_WEB_SPA_NAME/web
          docker push registry.heroku.com/$HEROKU_WEB_SPA_NAME/web
 
       # release images 
