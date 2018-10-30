@@ -51,6 +51,12 @@
             services.Configure<AppSettings>(Configuration);
 
             services.AddMvc();
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
             
             var connectionString = Configuration["NpgConnectionString"];
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
@@ -115,6 +121,8 @@
             {
                 await next();
             });
+
+            app.UseCors("MyPolicy");
 
             // Adds IdentityServer
             app.UseIdentityServer();
