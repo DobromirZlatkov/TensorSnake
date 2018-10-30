@@ -1,5 +1,6 @@
 class SnakeGame {
   constructor() {
+    this.body = document.getElementById("body");
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
     this.scoreIs = document.getElementById("score");
@@ -8,9 +9,10 @@ class SnakeGame {
     this.fps = 100;
     this.snake = [];
     this.walls = [];
-    this.numberOfWalls = 4;
+    this.numberOfWalls = 5;
     this.snakeLength = 5;
-    this.cellSize = 20;
+    this.wallMaxLength = 10;
+    this.cellSize = 10;
     this.snakeColor = "#3498db";
     this.foodColor = "#ff3636";
     this.wallColor = "#7ead48";
@@ -37,7 +39,7 @@ class SnakeGame {
 
     // makes canvas interactive upon load
     this.canvas.setAttribute("tabindex", 1);
-    this.canvas.style.outline = "none";
+    //  this.canvas.style.outline = "none";
     this.canvas.focus();
   }
 
@@ -54,60 +56,24 @@ class SnakeGame {
 
   // creating walls with its coordinates
   createWalls = () => {
-    const maxLength = 10;
-
+    this.walls = [];
     for (let i = 0; i < this.numberOfWalls; i++) {
       let currWall = [];
-      let startX = this.availableX[
-        this.getRandomInt(this.snakeLength, this.availableX.length)
-      ];
-      let startY = this.availableY[
-        this.getRandomInt(1, this.availableY.length)
-      ];
-
+      let startX = this.getRandomInt(this.snakeLength, this.availableX.length);
+      let startY = this.getRandomInt(1, this.availableY.length);
+      let currWallLenght = this.getRandomInt(1, this.wallMaxLength);
       currWall.push({ x: startX * this.cellSize, y: startY * this.cellSize });
 
-      let currWallLenght = this.getRandomInt(1, maxLength);
       for (let k = 0; k < currWallLenght; k++) {
+        // validate if pixel is in snake
         currWall.push({
           x: (startX + k) * this.cellSize,
           y: startY * this.cellSize
         });
       }
 
-      console.log("currWall", currWall);
-
       this.walls.push(currWall);
     }
-
-    // this.food.x = this.availableX[
-    //   Math.floor(Math.random() * this.availableX.length)
-    // ]; // random x position from array
-    // this.food.y = this.availableY[
-    //   Math.floor(Math.random() * this.availableY.length)
-    // ]; // random y position from array
-    // // looping through the snake and checking if there is a collision
-    // for (let i = 0; i < this.snake.length; i++) {
-    //   if (
-    //     this.checkCollision(
-    //       this.food.x,
-    //       this.food.y,
-    //       this.snake[i].x,
-    //       this.snake[i].y
-    //     )
-    //   ) {
-    //     this.createFood();
-    //   }
-    // }
-
-    // let wall1 = [{ x: 0, y: 0 }, { x: 1 * this.cellSize, y: 0 }];
-    // let wall2 = [
-    //   { x: 8, y: 8 * this.cellSize },
-    //   { x: 9 * this.cellSize, y: 8 * this.cellSize },
-    //   { x: 10 * this.cellSize, y: 8 * this.cellSize }
-    // ];
-    // this.walls.push(wall1);
-    // this.walls.push(wall2);
   };
 
   // Gets all wall pixels 'extracted because of nested loops for some better code'
@@ -138,6 +104,7 @@ class SnakeGame {
     this.food.y = this.availableY[
       Math.floor(Math.random() * this.availableY.length)
     ]; // random y position from array
+
     // looping through the snake and checking if there is a collision
     for (let i = 0; i < this.snake.length; i++) {
       if (
@@ -146,6 +113,21 @@ class SnakeGame {
           this.food.y,
           this.snake[i].x,
           this.snake[i].y
+        )
+      ) {
+        this.createFood();
+      }
+    }
+
+    // check walls for collision
+    let wallsPixels = this.getWallPixels();
+    for (let i = 0; i < wallsPixels.length; i++) {
+      if (
+        this.checkCollision(
+          this.food.x,
+          this.food.y,
+          wallsPixels[i].x,
+          wallsPixels[i].y
         )
       ) {
         this.createFood();
