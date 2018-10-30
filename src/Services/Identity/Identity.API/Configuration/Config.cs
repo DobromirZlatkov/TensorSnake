@@ -61,7 +61,8 @@
                     },
                     AllowedCorsOrigins = new List<string>
                     {
-                         $"{clientsUrl["Spa"]}"
+                         $"{clientsUrl["Spa"]}",
+                         "http://localhost:3000"
                     }
                 },
             };
