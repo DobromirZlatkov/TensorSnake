@@ -1,36 +1,26 @@
-import React, { Component } from 'react';
+import React from "react";
 import './App.css';
-import SnakeGame from './snake'
 
-class App extends Component {
+import AppRoutes from "./routing/AppRoutes";
+import { getStorageValue } from "./services/storageService";
 
-    componentDidMount() {
-        console.log(SnakeGame, "SnakeGame")
+
+class App extends React.Component {
+    constructor(props) {
+        super();
     }
-
+    
     render() {
-        return (
-            //<div className="App">
-            //    <header className="App-header">
-            //        <img src={logo} className="App-logo" alt="logo" />
-            //        <p>
-            //            Edit <code>src/App.js</code> and save to reload.
-            //      </p>
-            //        <a
-            //            className="App-link"
-            //            href="https://reactjs.org"
-            //            target="_blank"
-            //            rel="noopener noreferrer"
-            //        >
-            //            Learn React
-            //      </a>
-            //    </header>
-            //</div>
+        const token = getStorageValue("authentication");
+        let isAuthenticated = false;
+        if (token !== null) {
+            isAuthenticated = true;
+        }
 
-            <body>
-                <div className="score" id="score">0</div>
-                <canvas id="canvas" height="500px" width="500px"></canvas>
-            </body>
+        return (
+            <div className="App">
+                <AppRoutes isAuthenticated={isAuthenticated} />
+            </div>
         );
     }
 }
