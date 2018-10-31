@@ -33,6 +33,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{40DC3B3F-BDD
 		src\WebApps\WebSPA\src\index.js = src\WebApps\WebSPA\src\index.js
 		src\WebApps\WebSPA\src\logo.svg = src\WebApps\WebSPA\src\logo.svg
 		src\WebApps\WebSPA\src\serviceWorker.js = src\WebApps\WebSPA\src\serviceWorker.js
+		src\WebApps\WebSPA\src\snake.js = src\WebApps\WebSPA\src\snake.js
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "public", "public", "{D5FB4C34-E927-4B05-B703-3431E0941C44}"
