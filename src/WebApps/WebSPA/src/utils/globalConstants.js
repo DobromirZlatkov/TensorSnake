@@ -6,6 +6,7 @@ const GlobalConstants = {
   API_URL: API_URL,
   LOGIN_URL: `${API_URL}/connect/token`,
   LOGIN_RESPONSE_ERROR: "invalid_username_or_password",
+  USER_DATA_URL: `${API_URL}/connect/userinfo`,
   CLIENT_ID: CLIENT_ID,
   CLIENT_SECRET: CLIENT_SECRET
 };

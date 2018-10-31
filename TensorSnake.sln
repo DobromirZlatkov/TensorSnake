@@ -16,33 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApps", "WebApps", "{15A4
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{89AA1E15-96E9-45D1-9FC6-CFB5C664BDA9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebSPA", "WebSPA", "{18D1D670-BE5A-4FF5-94DB-16FEAEB1FED3}"
-	ProjectSection(SolutionItems) = preProject
-		src\WebApps\WebSPA\Dockerfile = src\WebApps\WebSPA\Dockerfile
-		src\WebApps\WebSPA\package-lock.json = src\WebApps\WebSPA\package-lock.json
-		src\WebApps\WebSPA\package.json = src\WebApps\WebSPA\package.json
-		src\WebApps\WebSPA\README.md = src\WebApps\WebSPA\README.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{40DC3B3F-BDD1-4827-9902-7AC1D777A0BB}"
-	ProjectSection(SolutionItems) = preProject
-		src\WebApps\WebSPA\src\App.css = src\WebApps\WebSPA\src\App.css
-		src\WebApps\WebSPA\src\App.js = src\WebApps\WebSPA\src\App.js
-		src\WebApps\WebSPA\src\App.test.js = src\WebApps\WebSPA\src\App.test.js
-		src\WebApps\WebSPA\src\index.css = src\WebApps\WebSPA\src\index.css
-		src\WebApps\WebSPA\src\index.js = src\WebApps\WebSPA\src\index.js
-		src\WebApps\WebSPA\src\logo.svg = src\WebApps\WebSPA\src\logo.svg
-		src\WebApps\WebSPA\src\serviceWorker.js = src\WebApps\WebSPA\src\serviceWorker.js
-		src\WebApps\WebSPA\src\snake.js = src\WebApps\WebSPA\src\snake.js
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "public", "public", "{D5FB4C34-E927-4B05-B703-3431E0941C44}"
-	ProjectSection(SolutionItems) = preProject
-		src\WebApps\WebSPA\public\favicon.ico = src\WebApps\WebSPA\public\favicon.ico
-		src\WebApps\WebSPA\public\index.html = src\WebApps\WebSPA\public\index.html
-		src\WebApps\WebSPA\public\manifest.json = src\WebApps\WebSPA\public\manifest.json
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".circleci", ".circleci", "{E7CCBB66-1EE1-4F79-ABD7-CDBEBCF4869F}"
 	ProjectSection(SolutionItems) = preProject
 		.circleci\config.yml = .circleci\config.yml
@@ -63,6 +36,78 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{0F3DAB28-193B-4C00-896E-1882DD7301A6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.API", "src\Services\Identity\Identity.API\Identity.API.csproj", "{9CA4B454-380B-40C3-BDF9-F8592B6A2508}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebSPA", "WebSPA", "{3BD20B41-63EF-4100-ADF4-074737A3B793}"
+	ProjectSection(SolutionItems) = preProject
+		src\WebApps\WebSPA\.env = src\WebApps\WebSPA\.env
+		src\WebApps\WebSPA\.eslintrc = src\WebApps\WebSPA\.eslintrc
+		src\WebApps\WebSPA\Dockerfile = src\WebApps\WebSPA\Dockerfile
+		src\WebApps\WebSPA\package-lock.json = src\WebApps\WebSPA\package-lock.json
+		src\WebApps\WebSPA\package.json = src\WebApps\WebSPA\package.json
+		src\WebApps\WebSPA\README.md = src\WebApps\WebSPA\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8C8D6E46-8C8E-4CE5-920D-7ADD8F51571D}"
+	ProjectSection(SolutionItems) = preProject
+		src\WebApps\WebSPA\src\App.css = src\WebApps\WebSPA\src\App.css
+		src\WebApps\WebSPA\src\App.js = src\WebApps\WebSPA\src\App.js
+		src\WebApps\WebSPA\src\App.test.js = src\WebApps\WebSPA\src\App.test.js
+		src\WebApps\WebSPA\src\index.css = src\WebApps\WebSPA\src\index.css
+		src\WebApps\WebSPA\src\index.js = src\WebApps\WebSPA\src\index.js
+		src\WebApps\WebSPA\src\logo.svg = src\WebApps\WebSPA\src\logo.svg
+		src\WebApps\WebSPA\src\serviceWorker.js = src\WebApps\WebSPA\src\serviceWorker.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "public", "public", "{EA34CF06-DC29-41D1-A9A1-69FDD575FBBB}"
+	ProjectSection(SolutionItems) = preProject
+		src\WebApps\WebSPA\public\favicon.ico = src\WebApps\WebSPA\public\favicon.ico
+		src\WebApps\WebSPA\public\index.html = src\WebApps\WebSPA\public\index.html
+		src\WebApps\WebSPA\public\manifest.json = src\WebApps\WebSPA\public\manifest.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", "{751ED4E2-A8EA-44F8-AE0C-6DD079908BEC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "routing", "routing", "{283E6481-0495-4AE3-AB9A-7ED4D5FEA07A}"
+	ProjectSection(SolutionItems) = preProject
+		src\WebApps\WebSPA\src\routing\AppRoutes.js = src\WebApps\WebSPA\src\routing\AppRoutes.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "utils", "utils", "{7C01A4EB-0916-4676-BFC3-98B46E1CFDEB}"
+	ProjectSection(SolutionItems) = preProject
+		src\WebApps\WebSPA\src\utils\globalConstants.js = src\WebApps\WebSPA\src\utils\globalConstants.js
+		src\WebApps\WebSPA\src\utils\snake.js = src\WebApps\WebSPA\src\utils\snake.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{C7425C0A-43B3-42DE-AFD0-68C1CA2E20B3}"
+	ProjectSection(SolutionItems) = preProject
+		src\WebApps\WebSPA\src\services\authService.js = src\WebApps\WebSPA\src\services\authService.js
+		src\WebApps\WebSPA\src\services\requestService.js = src\WebApps\WebSPA\src\services\requestService.js
+		src\WebApps\WebSPA\src\services\storageService.js = src\WebApps\WebSPA\src\services\storageService.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "auth", "auth", "{F9E2D82D-7510-4DDC-A6E1-C3032D63AC7B}"
+	ProjectSection(SolutionItems) = preProject
+		src\WebApps\WebSPA\src\components\auth\Home.js = src\WebApps\WebSPA\src\components\auth\Home.js
+		src\WebApps\WebSPA\src\components\auth\Login.js = src\WebApps\WebSPA\src\components\auth\Login.js
+		src\WebApps\WebSPA\src\components\auth\Register.js = src\WebApps\WebSPA\src\components\auth\Register.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "game", "game", "{2DD043B0-9782-4AF5-B552-DCB0AD129BF9}"
+	ProjectSection(SolutionItems) = preProject
+		src\WebApps\WebSPA\src\components\game\SnakeGame.js = src\WebApps\WebSPA\src\components\game\SnakeGame.js
+		src\WebApps\WebSPA\src\components\game\StartGame.js = src\WebApps\WebSPA\src\components\game\StartGame.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "navigation", "navigation", "{2672B3E1-E0B3-4213-85D0-7F57069243AC}"
+	ProjectSection(SolutionItems) = preProject
+		src\WebApps\WebSPA\src\components\navigation\Navigation.js = src\WebApps\WebSPA\src\components\navigation\Navigation.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{DA935617-1065-4CBA-AE1C-16E3EB2868F9}"
+	ProjectSection(SolutionItems) = preProject
+		src\WebApps\WebSPA\src\routing\config\ProtectedRoute.js = src\WebApps\WebSPA\src\routing\config\ProtectedRoute.js
+		src\WebApps\WebSPA\src\routing\config\PublicRoute.js = src\WebApps\WebSPA\src\routing\config\PublicRoute.js
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,9 +137,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{15A4A1D1-9FDF-4BBD-90B0-630CA07DC7A2} = {7EB20F2B-8D82-446C-AB87-776A36932A67}
-		{18D1D670-BE5A-4FF5-94DB-16FEAEB1FED3} = {15A4A1D1-9FDF-4BBD-90B0-630CA07DC7A2}
-		{40DC3B3F-BDD1-4827-9902-7AC1D777A0BB} = {18D1D670-BE5A-4FF5-94DB-16FEAEB1FED3}
-		{D5FB4C34-E927-4B05-B703-3431E0941C44} = {18D1D670-BE5A-4FF5-94DB-16FEAEB1FED3}
 		{F9DBAE4A-2F4F-44D7-82BF-47859653F003} = {7EB20F2B-8D82-446C-AB87-776A36932A67}
 		{A24F82DA-7208-446E-8F6B-4B48E27FFAF7} = {7EB20F2B-8D82-446C-AB87-776A36932A67}
 		{2790B2D2-D63A-4728-A901-92DC6148675F} = {F9DBAE4A-2F4F-44D7-82BF-47859653F003}
@@ -103,6 +145,17 @@ Global
 		{DEDD4D6C-6154-4368-B228-BA6D84268AEA} = {2790B2D2-D63A-4728-A901-92DC6148675F}
 		{0F3DAB28-193B-4C00-896E-1882DD7301A6} = {A24F82DA-7208-446E-8F6B-4B48E27FFAF7}
 		{9CA4B454-380B-40C3-BDF9-F8592B6A2508} = {0F3DAB28-193B-4C00-896E-1882DD7301A6}
+		{3BD20B41-63EF-4100-ADF4-074737A3B793} = {15A4A1D1-9FDF-4BBD-90B0-630CA07DC7A2}
+		{8C8D6E46-8C8E-4CE5-920D-7ADD8F51571D} = {3BD20B41-63EF-4100-ADF4-074737A3B793}
+		{EA34CF06-DC29-41D1-A9A1-69FDD575FBBB} = {3BD20B41-63EF-4100-ADF4-074737A3B793}
+		{751ED4E2-A8EA-44F8-AE0C-6DD079908BEC} = {8C8D6E46-8C8E-4CE5-920D-7ADD8F51571D}
+		{283E6481-0495-4AE3-AB9A-7ED4D5FEA07A} = {8C8D6E46-8C8E-4CE5-920D-7ADD8F51571D}
+		{7C01A4EB-0916-4676-BFC3-98B46E1CFDEB} = {8C8D6E46-8C8E-4CE5-920D-7ADD8F51571D}
+		{C7425C0A-43B3-42DE-AFD0-68C1CA2E20B3} = {8C8D6E46-8C8E-4CE5-920D-7ADD8F51571D}
+		{F9E2D82D-7510-4DDC-A6E1-C3032D63AC7B} = {751ED4E2-A8EA-44F8-AE0C-6DD079908BEC}
+		{2DD043B0-9782-4AF5-B552-DCB0AD129BF9} = {751ED4E2-A8EA-44F8-AE0C-6DD079908BEC}
+		{2672B3E1-E0B3-4213-85D0-7F57069243AC} = {751ED4E2-A8EA-44F8-AE0C-6DD079908BEC}
+		{DA935617-1065-4CBA-AE1C-16E3EB2868F9} = {283E6481-0495-4AE3-AB9A-7ED4D5FEA07A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0106D7F1-2346-4E62-A2C5-CE432224A23A}
