@@ -1,29 +1,47 @@
+import PropTypes from "prop-types";
+
 class SnakeGame {
-  constructor() {
-    this.body = document.getElementById("body");
+  constructor(options) {
+    this.keyCommands = [];
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
-    this.scoreIs = document.getElementById("score");
+    this.scoreUiContainer = document.getElementById("score");
+    this.levelUiContainer = document.getElementById("level");
+    this.leftFoodsContainer = document.getElementById("left-food");
+
     this.direction = "";
     this.directionQueue = "";
-    this.fps = 100;
-    this.snake = [];
-    this.walls = [];
-    this.numberOfWalls = 5;
+
+    this.timer = false;
+    this.options = options;
+
+    this.gameOverCallback = options.gameOverCallback;
+    this.foodsPerLevel = options.foodsPerLevel;
+    this.levelIncreaseFactor = options.levelIncreaseFactor;
+    this.numberOfWalls = options.numberOfWalls;
+    this.snakeColor = options.snakeColor;
+    this.foodColor = options.foodColor;
+    this.wallColor = options.wallColor;
+    this.playGroundColor = options.playGroundColor;
+    this.playGroundStroke = options.playGroundStroke;
+    this.fps = options.fps;
+
+    this.level = 1;
+    this.eatenFoods = 0;
+
     this.snakeLength = 5;
     this.wallMaxLength = 10;
     this.cellSize = 10;
-    this.snakeColor = "#3498db";
-    this.foodColor = "#ff3636";
-    this.wallColor = "#7ead48";
-    this.playGroundColor = "#fff";
-    this.playGroundStroke = "#eee";
+
+    this.snake = [];
+    this.walls = [];
     this.availableX = [];
     this.availableY = [];
     this.food = {
       x: 0,
       y: 0
     };
+
     this.score = 0;
     this.loop = undefined;
 
@@ -39,46 +57,101 @@ class SnakeGame {
 
     // makes canvas interactive upon load
     this.canvas.setAttribute("tabindex", 1);
-    //  this.canvas.style.outline = "none";
     this.canvas.focus();
   }
 
+  /**
+   * @desc Moves the snake to the next level, when all foods at this level are eaten
+   */
+  moveToNextLevel = () => {
+    this.eatenFoods = 0;
+    this.level++;
+    this.fps -= this.levelIncreaseFactor + this.level;
+    this.walls = [];
+    this.numberOfWalls *= this.levelIncreaseFactor;
+    this.createWalls();
+    this.createFood();
+  };
+
+  /**
+   * @desc Draws square at board. Used by all main game objects
+   * @param {x} square X coordinate
+   * @param {y} square Y coordinate
+   */
   drawSquare = (x, y, color) => {
     this.ctx.fillStyle = color;
     this.ctx.fillRect(x, y, this.cellSize, this.cellSize);
   };
 
+  /**
+   * @desc Generates random number in range
+   * @param {min} range minimum
+   * @param {max} range maximum
+   */
   getRandomInt = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
+    const ceilMin = Math.ceil(min);
+    const ceilMax = Math.floor(max);
+    return Math.floor(Math.random() * (ceilMax - ceilMin)) + ceilMin;
   };
 
-  // creating walls with its coordinates
+  /**
+   * @desc Generates random walls data.
+   */
   createWalls = () => {
     this.walls = [];
     for (let i = 0; i < this.numberOfWalls; i++) {
-      let currWall = [];
-      let startX = this.getRandomInt(this.snakeLength, this.availableX.length);
-      let startY = this.getRandomInt(1, this.availableY.length);
-      let currWallLenght = this.getRandomInt(1, this.wallMaxLength);
+      const currWall = [];
+      const startX = this.getRandomInt(
+        this.snakeLength,
+        this.availableX.length
+      );
+      const startY = this.getRandomInt(1, this.availableY.length);
+      const currWallLenght = this.getRandomInt(1, this.wallMaxLength);
+      const wallDirection = this.getRandomInt(1, 3);
+
       currWall.push({ x: startX * this.cellSize, y: startY * this.cellSize });
 
       for (let k = 0; k < currWallLenght; k++) {
         // validate if pixel is in snake
-        currWall.push({
-          x: (startX + k) * this.cellSize,
-          y: startY * this.cellSize
-        });
+        let pixel = {};
+        if (wallDirection === 1) {
+          pixel = {
+            x: (startX + k) * this.cellSize,
+            y: startY * this.cellSize
+          };
+        } else {
+          pixel = {
+            x: startX * this.cellSize,
+            y: (startY + k) * this.cellSize
+          };
+        }
+
+        // validate if generated pixel is at the snakes body
+        for (let j = 0; j < this.snake.length; j++) {
+          if (
+            this.checkCollision(
+              this.food.x,
+              this.food.y,
+              this.snake[j].x,
+              this.snake[j].y
+            )
+          ) {
+            continue;
+          }
+        }
+
+        currWall.push(pixel);
       }
 
       this.walls.push(currWall);
     }
   };
 
-  // Gets all wall pixels 'extracted because of nested loops for some better code'
+  /**
+   * @desc Gets all wall pixels 'extracted because of nested loops for some better code'
+   */
   getWallPixels = () => {
-    let result = [];
+    const result = [];
     for (let i = 0; i < this.walls.length; i++) {
       const wallPixels = this.walls[i];
       for (let j = 0; j < wallPixels.length; j++) {
@@ -88,15 +161,19 @@ class SnakeGame {
     return result;
   };
 
-  // drawing walls
+  /**
+   * @desc Gets all wall pixesls and draws them to the board
+   */
   drawWalls = () => {
-    let wallsPixels = this.getWallPixels();
+    const wallsPixels = this.getWallPixels();
     for (let i = 0; i < wallsPixels.length; i++) {
       this.drawSquare(wallsPixels[i].x, wallsPixels[i].y, this.wallColor);
     }
   };
 
-  // giving the food object its coordinates
+  /**
+   * @desc Generates random food data
+   */
   createFood = () => {
     this.food.x = this.availableX[
       Math.floor(Math.random() * this.availableX.length)
@@ -120,7 +197,7 @@ class SnakeGame {
     }
 
     // check walls for collision
-    let wallsPixels = this.getWallPixels();
+    const wallsPixels = this.getWallPixels();
     for (let i = 0; i < wallsPixels.length; i++) {
       if (
         this.checkCollision(
@@ -135,23 +212,27 @@ class SnakeGame {
     }
   };
 
-  // drawing food on the canvas
+  /**
+   * @desc Draws the food on the board
+   */
   drawFood = () => {
     this.drawSquare(this.food.x, this.food.y, this.foodColor);
   };
 
-  // setting the colors for the canvas. color1 - the background, color2 - the line color
+  /**
+   * @desc Sets the background color for the canvas
+   */
   setBackground = (color1, color2) => {
     this.ctx.fillStyle = color1;
     this.ctx.strokeStyle = color2;
 
     this.ctx.fillRect(0, 0, this.canvas.height, this.canvas.width);
 
-    for (var x = 0.5; x < this.canvas.width; x += this.cellSize) {
+    for (let x = 0.5; x < this.canvas.width; x += this.cellSize) {
       this.ctx.moveTo(x, 0);
       this.ctx.lineTo(x, this.canvas.height);
     }
-    for (var y = 0.5; y < this.canvas.height; y += this.cellSize) {
+    for (let y = 0.5; y < this.canvas.height; y += this.cellSize) {
       this.ctx.moveTo(0, y);
       this.ctx.lineTo(this.canvas.width, y);
     }
@@ -159,23 +240,29 @@ class SnakeGame {
     this.ctx.stroke();
   };
 
-  // creating the snake and pushing coordinates to the array
+  /**
+   * @desc Generates snake data
+   */
   createSnake = () => {
     this.snake = [];
-    for (var i = this.snakeLength; i > 0; i--) {
-      var k = i * this.cellSize;
+    for (let i = this.snakeLength; i > 0; i--) {
+      const k = i * this.cellSize;
       this.snake.push({ x: k, y: 0 });
     }
   };
 
-  // loops through the snake array and draws each element
+  /**
+   * @desc Draws snake data to the board
+   */
   drawSnake = () => {
     for (let i = 0; i < this.snake.length; i++) {
       this.drawSquare(this.snake[i].x, this.snake[i].y, this.snakeColor);
     }
   };
 
-  // keyboard interactions | direction != '...' doesn't let the snake go backwards
+  /**
+   * @desc Keyboard commands handle. Changing direction logic.
+   */
   changeDirection = keycode => {
     if (keycode === 37 && this.direction !== "right") {
       this.directionQueue = "left";
@@ -188,11 +275,12 @@ class SnakeGame {
     }
   };
 
-  // changing the snake's movement
+  /**
+   * @desc Moves the snake depending the direction.
+   */
   moveSnake = () => {
-    var x = this.snake[0].x; // getting the head coordinates...hhehehe... getting head..
-    // anyway... read on...
-    var y = this.snake[0].y;
+    let x = this.snake[0].x;
+    let y = this.snake[0].y;
 
     this.direction = this.directionQueue;
 
@@ -205,40 +293,62 @@ class SnakeGame {
     } else if (this.direction === "down") {
       y += this.cellSize;
     }
-    // removes the tail and makes it the new head...very delicate, don't touch this
-    var tail = this.snake.pop();
+
+    const tail = this.snake.pop();
     tail.x = x;
     tail.y = y;
     this.snake.unshift(tail);
   };
 
-  // checks if too coordinates match up
+  /**
+   * @desc Checks for collision between two coordinates
+   * @param {x1} first pixel x coordinate
+   * @param {x2} second pixel x coordinate
+   * @param {y1} first pixel y coordinate
+   * @param {y2} second pixel y coordinate
+   */
   checkCollision = (x1, y1, x2, y2) => {
     if (x1 === x2 && y1 === y2) {
       return true;
-    } else {
-      return false;
+    }
+    return false;
+  };
+
+  /**
+   * @desc Stops game. Stops frames refreshing
+   */
+  stopGame = () => {
+    clearInterval(this.loop);
+    this.timer = false;
+  };
+
+  /**
+   * @desc Starts game. Starts frames refreshing
+   */
+  startGame = () => {
+    if (!this.timer) {
+      this.loop = setInterval(this.game, this.fps);
+      this.timer = true;
+      this.canvas.focus();
     }
   };
 
-  restartGame = () => {
-    this.setBackground();
-    this.createSnake();
-    this.drawSnake();
-    this.createFood();
-    this.drawFood();
-    this.directionQueue = "right";
-    this.score = 0;
+  /**
+   * @desc Game over. Stops the game and executes callback from the UI component, to enable ui manipulations.
+   */
+  gameOver = () => {
+    this.stopGame();
+    this.gameOverCallback();
   };
 
-  stopGame = () => {
-    clearInterval(this.loop);
-  };
-
-  // main game loop
+  /**
+   * @desc The game engine. Runs the entire logic of the game
+   */
   game = () => {
-    let self = this;
-    var head = self.snake[0];
+    const self = this;
+    const currCommand = self.keyCommands.shift();
+    self.changeDirection(currCommand);
+    const head = self.snake[0];
 
     // checking for collision at the end of the screen
     if (
@@ -247,24 +357,22 @@ class SnakeGame {
       head.y < 0 ||
       head.y > self.canvas.height - self.cellSize
     ) {
-      //self.restartGame();
-      this.stopGame();
+      this.gameOver();
     }
 
     // check for collision at wallpixel
-    let allWallPixels = self.getWallPixels();
+    const allWallPixels = self.getWallPixels();
     for (let i = 0; i < allWallPixels.length; i++) {
       const wallPixel = allWallPixels[i];
       if (head.x === wallPixel.x && head.y === wallPixel.y) {
-        this.stopGame();
+        this.gameOver();
       }
     }
 
     // checking for colisions with snake's body
     for (let i = 1; i < self.snake.length; i++) {
       if (head.x === self.snake[i].x && head.y === self.snake[i].y) {
-        // self.restartGame();
-        this.stopGame();
+        this.gameOver();
       }
     }
 
@@ -274,34 +382,68 @@ class SnakeGame {
       self.createFood();
       self.drawFood();
       self.score += 10;
+      self.eatenFoods++;
+
+      // check if is time for new level
+      if (self.eatenFoods >= self.foodsPerLevel) {
+        self.moveToNextLevel();
+      }
     }
 
     self.canvas.onkeydown = function(evt) {
       evt = evt || window.event;
-      self.changeDirection(evt.keyCode);
+      self.keyCommands.push(evt.keyCode);
     };
 
     self.ctx.beginPath();
     self.setBackground(self.playGroundColor, self.playGroundStroke);
-    self.scoreIs.innerHTML = self.score;
+    self.scoreUiContainer.innerHTML = self.score;
+    self.levelUiContainer.innerHTML = self.level;
+    self.leftFoodsContainer.innerHTML = self.foodsPerLevel - self.eatenFoods;
     self.drawSnake();
     self.drawFood();
     self.drawWalls();
     self.moveSnake();
   };
 
+  /**
+   * @desc Resets the state of the game
+   */
+  resetState = () => {
+    this.gameOverCallback = this.options.gameOverCallback;
+    this.foodsPerLevel = this.options.foodsPerLevel;
+    this.levelIncreaseFactor = this.options.levelIncreaseFactor;
+    this.numberOfWalls = this.options.numberOfWalls;
+    this.snakeColor = this.options.snakeColor;
+    this.foodColor = this.options.foodColor;
+    this.wallColor = this.options.wallColor;
+    this.playGroundColor = this.options.playGroundColor;
+    this.playGroundStroke = this.options.playGroundStroke;
+    this.fps = this.options.fps;
+
+    this.level = 1;
+    this.eatenFoods = 0;
+    this.snakeLength = 5;
+    this.score = 0;
+    this.loop = undefined;
+  };
+
+  /**
+   * @desc Creates new game and starts the frames on the game engine
+   */
   newGame = () => {
+    this.resetState();
     this.direction = "right"; // initial direction
     this.directionQueue = "right";
     this.ctx.beginPath();
     this.createSnake();
-    this.createFood();
     this.createWalls();
+    this.createFood();
 
     if (typeof this.loop !== "undefined") {
-      clearInterval(this.loop);
+      this.stopGame();
     } else {
-      this.loop = setInterval(this.game, this.fps);
+      this.startGame();
     }
   };
 }
