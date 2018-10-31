@@ -12,5 +12,14 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - NpgConnectionString=${TENSOR_SNAKE_IDENTITY_DB:-User ID = postgres;Password=56;Server=172.31.224.1;Port=5432;Database=TensorSnake.identity.db;Integrated Security=true; Pooling=true}
       - SpaClient=http://localhost:3000
+      - ScoreApi=http://localhost:3001
     ports:
       - "3105:80"
+
+  score.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - NpgConnectionString=${TENSOR_SNAKE_IDENTITY_DB:-User ID = postgres;Password=56;Server=172.31.224.1;Port=5432;Database=TensorSnake.score.db;Integrated Security=true; Pooling=true}
+      - IdentityUrl=http://10.0.75.1:3105
+    ports:
+      - "3001:80"

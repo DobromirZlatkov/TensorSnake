@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>TensorSnake.Services.Score.Services.Data</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\Score.Data.Models\Score.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\Score.Data\Score.Data.csproj" />
+  </ItemGroup>
+
+</Project>
