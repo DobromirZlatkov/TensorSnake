@@ -17,7 +17,7 @@ namespace TensorSnake.Services.Identity.API.Data
             var clientUrls = new Dictionary<string, string>();
 
             clientUrls.Add("Spa", configuration.GetValue<string>("SpaClient"));
-          //  clientUrls.Add("CatalogApi", configuration.GetValue<string>("CatalogUrl"));
+            clientUrls.Add("ScoreApi", configuration.GetValue<string>("ScoreApi"));
 
             /// Delete all clients and repopulated, to make dev process easier
             var clientsToDelete = context.Clients;

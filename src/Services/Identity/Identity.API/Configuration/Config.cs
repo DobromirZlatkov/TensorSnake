@@ -14,7 +14,7 @@
         {
             return new List<ApiResource>
             {
-                // new ApiResource("ratings", "Ratings API"),
+                new ApiResource("score", "Scores API"),
             };
         }
 
@@ -58,11 +58,27 @@
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "score"
                     },
                     AllowedCorsOrigins = new List<string>
                     {
                          $"{clientsUrl["Spa"]}",
                          "http://localhost:3000"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "scoresswaggerui",
+                    ClientName = "Scores Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["ScoreApi"]}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["ScoreApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "score"
                     }
                 },
             };

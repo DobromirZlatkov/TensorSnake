@@ -114,14 +114,6 @@
                 app.UsePathBase(pathBase);
             }
 
-            app.UseStaticFiles();
-            
-            // Make work identity server redirections in Edge and lastest versions of browers. WARN: Not valid in a production environment.
-            app.Use(async (context, next) =>
-            {
-                await next();
-            });
-
             app.UseCors("MyPolicy");
 
             // Adds IdentityServer
