@@ -1,6 +1,7 @@
 import React from "react";
 import './App.css';
 
+import Navigation from "./components/navigation/Navigation";
 import AppRoutes from "./routing/AppRoutes";
 import { getStorageValue } from "./services/storageService";
 
@@ -19,6 +20,7 @@ class App extends React.Component {
 
         return (
             <div className="App">
+                <Navigation isAuthenticated={isAuthenticated} token={token} />
                 <AppRoutes isAuthenticated={isAuthenticated} />
             </div>
         );
