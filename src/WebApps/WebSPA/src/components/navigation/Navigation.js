@@ -10,24 +10,34 @@ class Navigation extends React.Component {
         this.state = {
             email: ""
         };
+
+        this._getUserData = this._getUserData.bind(this);
+    }
+
+    _getUserData(token) {
+        const headers = {
+            Authorization: `Bearer ${token}`
+        };
+        get(GlobalConstants.USER_DATA_URL, headers)
+        .then(res => res.json())
+        .then(res => {
+            this.setState({
+                email: res.name
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        });
     }
 
     componentDidMount() {
         if (this.props.isAuthenticated) {
-            const headers = {
-                Authorization: `Bearer ${this.props.token}`
-            };
-            get(GlobalConstants.USER_DATA_URL, headers)
-            .then(res => res.json())
-            .then(res => {
-                this.setState({
-                    email: res.name
-                });
-            })
-            .catch(err => {
-                console.log(err);
-            });
+            this._getUserData(this.props.token);
         }
+    }
+
+    componentWillReceiveProps(props) {
+        this._getUserData(props.token);
     }
 
     render() {
@@ -51,6 +61,9 @@ class Navigation extends React.Component {
                             <li className="dropdown">
                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{this.state.email}
                                 <span className="caret"></span></a>
+                                <ul className="dropdown-menu">
+                                    <li><a href="#">Action</a></li>
+                                </ul>
                             </li>
                         </ul>
                     </div>

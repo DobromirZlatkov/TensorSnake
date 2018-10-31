@@ -4,3 +4,11 @@ export function get(url, headers = {}) {
         headers: headers
     });
 }
+
+export function post(url, body = {}, headers = {}) {
+    return fetch(url, {
+        method: "POST",
+        headers: headers,
+        body: body
+    });
+}

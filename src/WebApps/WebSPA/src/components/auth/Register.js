@@ -1,6 +1,11 @@
 import React from "react";
+import { withRouter } from "react-router";
+import PropTypes from "prop-types";
 
 import AuthService from "../../services/authService";
+import GlobalConstants from "../../utils/globalConstants";
+import { setStorageValue } from "../../services/storageService";
+import { post } from "../../services/requestService";
 
 const jumbotronStyles = {
   minHeight: "100vh",
@@ -69,7 +74,33 @@ class Register extends React.Component {
 
     let isFormValid = this.handleFormValidation();
     if (isFormValid) {
-      // Process register if form is valid
+      let body = new FormData();
+      body.append("email", this.state.username);
+      body.append("password", this.state.password);
+      body.append("confirmpassword", this.state.password);
+
+      post(GlobalConstants.REGISTER_URL, body)
+      .then(res => {
+        if (res.status === 400) {
+          let errors = { ...this.state.errors };
+          errors.username = "User with that email already exists";
+          this.setState({errors});
+          return Promise.reject();
+        } else {
+          return Promise.resolve();
+        }
+      })
+      .then(() => {
+        let authService = new AuthService();
+        return authService.getAccessToken(this.state.username, this.state.password);
+      })
+      .then(res => {
+        setStorageValue("authentication", res.accessToken);
+        this.context.router.history.push("/");
+      })
+      .catch(err => {
+        console.log(err)
+      });
     }
   }
 
@@ -131,4 +162,8 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+Register.contextTypes = {
+  router: PropTypes.object.isRequired
+};
+
+export default withRouter(Register);
