@@ -1,45 +1,7 @@
 import React from "react";
-
-import GlobalConstants from "../../utils/globalConstants";
-import { get } from "../../services/requestService";
+import { connect } from "react-redux";
 
 class Navigation extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      email: ""
-    };
-
-    this._getUserData = this._getUserData.bind(this);
-  }
-
-  _getUserData(token) {
-    const headers = {
-      Authorization: `Bearer ${token}`
-    };
-    get(GlobalConstants.USER_DATA_URL, headers)
-      .then(res => res.json())
-      .then(res => {
-        this.setState({
-          email: res.name
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
-  componentDidMount() {
-    if (this.props.isAuthenticated) {
-      this._getUserData(this.props.token);
-    }
-  }
-
-  componentWillReceiveProps(props) {
-    this._getUserData(props.token);
-  }
-
   render() {
     return (
       <nav className="navbar navbar-default">
@@ -76,7 +38,7 @@ class Navigation extends React.Component {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    {this.state.email}
+                    {this.props.user.userName}
                     <span className="caret" />
                   </a>
                 </li>
@@ -89,4 +51,14 @@ class Navigation extends React.Component {
   }
 }
 
-export default Navigation;
+function mapStateToProps(state) {
+  return {
+    user: state.user,
+    isAuthenticated: state.isAuthenticated
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(Navigation);

@@ -1,11 +1,17 @@
 import React from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
+
+import * as loadingActions from "../../actions/loadingActions";
+import * as userActions from "../../actions/userActions";
+import * as authActions from "../../actions/authActions";
 
 import AuthService from "../../services/authService";
 import GlobalConstants from "../../utils/globalConstants";
 import { setStorageValue } from "../../services/storageService";
-import { post } from "../../services/requestService";
+import { authorizedFetch } from "../../services/requestService";
 
 const jumbotronStyles = {
   minHeight: "100vh",
@@ -90,9 +96,11 @@ class Register extends React.Component {
       body.append("email", this.state.username);
       body.append("password", this.state.password);
       body.append("confirmpassword", this.state.password);
+      this.props.loadingActions.setLoading(true);
 
-      post(GlobalConstants.REGISTER_URL, body)
+      authorizedFetch(GlobalConstants.REGISTER_URL, "POST", body)
         .then(res => {
+          this.props.loadingActions.setLoading(false);
           if (res.status === 400) {
             let errors = { ...this.state.errors };
             errors.username = "User with that email already exists";
@@ -111,6 +119,18 @@ class Register extends React.Component {
         })
         .then(res => {
           setStorageValue("authentication", res.accessToken);
+          this.props.authActions.setIsAuthenticated(true);
+          return authorizedFetch(GlobalConstants.USER_DATA_URL, "GET");
+        })
+        .then(res => res.json())
+        .then(res => {
+          let userData = {
+            userId: res.sub,
+            userName: res.name
+          };
+          return this.props.userActions.setUser(userData);
+        })
+        .then(() => {
           this.context.router.history.push("/");
         })
         .catch(err => {
@@ -194,4 +214,17 @@ Register.contextTypes = {
   router: PropTypes.object.isRequired
 };
 
-export default withRouter(Register);
+function mapDispatchToProps(dispatch) {
+  return {
+    userActions: bindActionCreators(userActions, dispatch),
+    loadingActions: bindActionCreators(loadingActions, dispatch),
+    authActions: bindActionCreators(authActions, dispatch)
+  };
+}
+
+export default withRouter(
+  connect(
+    null,
+    mapDispatchToProps
+  )(Register)
+);

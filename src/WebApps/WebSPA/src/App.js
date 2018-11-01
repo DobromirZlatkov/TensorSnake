@@ -6,7 +6,6 @@ import Loader from "react-loader-spinner";
 import { withRouter } from "react-router-dom";
 import Navigation from "./components/navigation/Navigation";
 import AppRoutes from "./routing/AppRoutes";
-import { getStorageValue } from "./services/storageService";
 
 class App extends React.Component {
   constructor(props) {
@@ -14,12 +13,6 @@ class App extends React.Component {
   }
 
   render() {
-    const token = getStorageValue("authentication");
-    let isAuthenticated = false;
-    if (token !== null) {
-      isAuthenticated = true;
-    }
-
     return (
       <div className="App">
         <div
@@ -36,8 +29,8 @@ class App extends React.Component {
             this.props.isLoading ? { display: "none" } : { display: "block" }
           }
         >
-          <Navigation isAuthenticated={isAuthenticated} token={token} />
-          <AppRoutes isAuthenticated={isAuthenticated} />
+          <Navigation />
+          <AppRoutes />
         </div>
       </div>
     );

@@ -2,9 +2,16 @@ import React from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as loadingActions from "../../actions/loadingActions";
+import * as userActions from "../../actions/userActions";
+import * as authActions from "../../actions/authActions";
+
 import GlobalConstants from "../../utils/globalConstants";
 import AuthService from "../../services/authService";
 import { setStorageValue } from "../../services/storageService";
+import { authorizedFetch } from "../../services/requestService";
 
 const jumbotronStyles = {
   minHeight: "100vh",
@@ -73,10 +80,24 @@ class Login extends React.Component {
 
     let isFormValid = this.handleFormValidation();
     if (isFormValid) {
+      this.props.loadingActions.setLoading(true);
       this.authService
         .getAccessToken(this.state.username, this.state.password)
         .then(res => {
           setStorageValue("authentication", res.accessToken);
+          this.props.authActions.setIsAuthenticated(true);
+          return authorizedFetch(GlobalConstants.USER_DATA_URL, "GET");
+        })
+        .then(res => res.json())
+        .then(res => {
+          let userData = {
+            userId: res.sub,
+            userName: res.name
+          };
+          return this.props.userActions.setUser(userData);
+        })
+        .then(() => {
+          this.props.loadingActions.setLoading(false);
           this.context.router.history.push("/start-game");
         })
         .catch(err => {
@@ -88,9 +109,7 @@ class Login extends React.Component {
             errors.username = "Username or password is incorrect";
             this.setState({ errors });
           }
-        })
-        .then(res => {
-          this.authService.getUserInfo();
+          this.props.loadingActions.setLoading(false);
         });
     }
   }
@@ -157,4 +176,17 @@ Login.contextTypes = {
   router: PropTypes.object.isRequired
 };
 
-export default withRouter(Login);
+function mapDispatchToProps(dispatch) {
+  return {
+    loadingActions: bindActionCreators(loadingActions, dispatch),
+    userActions: bindActionCreators(userActions, dispatch),
+    authActions: bindActionCreators(authActions, dispatch)
+  };
+}
+
+export default withRouter(
+  connect(
+    null,
+    mapDispatchToProps
+  )(Login)
+);

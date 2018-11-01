@@ -14,36 +14,11 @@ class AppRoutes extends React.Component {
   render() {
     return (
       <Switch>
-        <PublicRoute
-          isAuthenticated={this.props.isAuthenticated}
-          exact
-          path="/"
-          component={Home}
-        />
-        <PublicRoute
-          isAuthenticated={this.props.isAuthenticated}
-          exact
-          path="/login"
-          component={Login}
-        />
-        <PublicRoute
-          isAuthenticated={this.props.isAuthenticated}
-          exact
-          path="/register"
-          component={Register}
-        />
-        <ProtectedRoute
-          isAuthenticated={this.props.isAuthenticated}
-          exact
-          path="/start-game"
-          component={StartGame}
-        />
-        <ProtectedRoute
-          isAuthenticated={this.props.isAuthenticated}
-          exact
-          path="/snake-game"
-          component={SnakeGame}
-        />
+        <PublicRoute exact path="/" component={Home} />
+        <PublicRoute exact path="/login" component={Login} />
+        <PublicRoute exact path="/register" component={Register} />
+        <ProtectedRoute exact path="/start-game" component={StartGame} />
+        <ProtectedRoute exact path="/snake-game" component={SnakeGame} />
       </Switch>
     );
   }
