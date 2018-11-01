@@ -6,6 +6,7 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using TensorSnake.Services.Score.API.ViewModels;
     using TensorSnake.Services.Score.Services.Data.Contracts;
 
     [Authorize]
@@ -34,6 +35,7 @@
             var gameScoresList = await _gameScoreService
                 .GetAll()
                 .OrderBy(x => x.HighScore)
+                .Select(GameScoreViewModel.FromGameScoreViewModel)
                 .ToListAsync();
 
             return Ok(gameScoresList);

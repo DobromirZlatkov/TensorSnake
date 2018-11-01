@@ -6,16 +6,16 @@
 
     public class GameScoreViewModel
     {
-        public static Expression<Func<GameScoreViewModel, GameScore>> FromGameScoreViewModel
+        public static Expression<Func<GameScore, GameScoreViewModel>> FromGameScoreViewModel
         {
             get
             {
                 return
-                    gameScore => new GameScore
+                    gameScore => new GameScoreViewModel
                     {
                         UserId = gameScore.UserId,
+                        UserEmail = gameScore.UserEmail,
                         HighScore = gameScore.HighScore,
-                        UserEmail = gameScore.UserEmail
                     };
             }
         }
