@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
 		.gitignore = .gitignore
+		code-architecture.png = code-architecture.png
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -82,6 +83,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{C7
 	ProjectSection(SolutionItems) = preProject
 		src\WebApps\WebSPA\src\services\authService.js = src\WebApps\WebSPA\src\services\authService.js
 		src\WebApps\WebSPA\src\services\requestService.js = src\WebApps\WebSPA\src\services\requestService.js
+		src\WebApps\WebSPA\src\services\scoreApiService.js = src\WebApps\WebSPA\src\services\scoreApiService.js
 		src\WebApps\WebSPA\src\services\storageService.js = src\WebApps\WebSPA\src\services\storageService.js
 	EndProjectSection
 EndProject
@@ -133,14 +135,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "store", "store", "{B0166B7E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "reducers", "reducers", "{AD728A5C-D2F5-4A66-B726-D7D8073B2ECF}"
 	ProjectSection(SolutionItems) = preProject
+		src\WebApps\WebSPA\src\reducers\authReducer.js = src\WebApps\WebSPA\src\reducers\authReducer.js
 		src\WebApps\WebSPA\src\reducers\index.js = src\WebApps\WebSPA\src\reducers\index.js
 		src\WebApps\WebSPA\src\reducers\loadingReducer.js = src\WebApps\WebSPA\src\reducers\loadingReducer.js
+		src\WebApps\WebSPA\src\reducers\userReducer.js = src\WebApps\WebSPA\src\reducers\userReducer.js
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "actions", "actions", "{BA0F783C-73DB-4576-8D8B-6065F7ED5816}"
 	ProjectSection(SolutionItems) = preProject
 		src\WebApps\WebSPA\src\actions\actionTypes.js = src\WebApps\WebSPA\src\actions\actionTypes.js
+		src\WebApps\WebSPA\src\actions\authActions.js = src\WebApps\WebSPA\src\actions\authActions.js
 		src\WebApps\WebSPA\src\actions\loadingActions.js = src\WebApps\WebSPA\src\actions\loadingActions.js
+		src\WebApps\WebSPA\src\actions\userActions.js = src\WebApps\WebSPA\src\actions\userActions.js
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{419E6C0E-6D36-48D6-ACC3-C15404943232}"
