@@ -33,9 +33,9 @@
         {
             var gameScoresList = await _gameScoreService
                .GetAll()
+               .OrderByDescending(x => x.HighScore)
                .Skip((page - 1) * pageSize)
                .Take(pageSize)
-               .OrderByDescending(x => x.HighScore)
                .Select(GameScoreResponseViewModel.FromGameScore)
                .ToListAsync();
 

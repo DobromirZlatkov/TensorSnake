@@ -1,11 +1,15 @@
 import React from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
+
+import * as userActions from "../../actions/userActions";
 
 import AuthService from "../../services/authService";
 import GlobalConstants from "../../utils/globalConstants";
 import { setStorageValue } from "../../services/storageService";
-import { post } from "../../services/requestService";
+import { get, post } from "../../services/requestService";
 
 const jumbotronStyles = {
   minHeight: "100vh",
@@ -69,12 +73,12 @@ class Register extends React.Component {
     if (!password || password.length < 6) {
       errors.password = "Password is too short";
       formIsValid = false;
-      }
+    }
 
     const confirmPassword = this.state.confirmPassword;
     if (confirmPassword !== password) {
-        errors.confirmPassword = "Passwords don't match";
-        formIsValid = false;
+      errors.confirmPassword = "Passwords don't match";
+      formIsValid = false;
     }
 
     this.setState({ errors: errors });
@@ -92,27 +96,45 @@ class Register extends React.Component {
       body.append("confirmpassword", this.state.password);
 
       post(GlobalConstants.REGISTER_URL, body)
-      .then(res => {
-        if (res.status === 400) {
-          let errors = { ...this.state.errors };
-          errors.username = "User with that email already exists";
-          this.setState({errors});
-          return Promise.reject();
-        } else {
-          return Promise.resolve();
-        }
-      })
-      .then(() => {
-        let authService = new AuthService();
-        return authService.getAccessToken(this.state.username, this.state.password);
-      })
-      .then(res => {
-        setStorageValue("authentication", res.accessToken);
-        this.context.router.history.push("/");
-      })
-      .catch(err => {
-        console.log(err)
-      });
+        .then(res => {
+          if (res.status === 400) {
+            let errors = { ...this.state.errors };
+            errors.username = "User with that email already exists";
+            this.setState({ errors });
+            return Promise.reject();
+          } else {
+            return Promise.resolve();
+          }
+        })
+        .then(() => {
+          let authService = new AuthService();
+          return authService.getAccessToken(
+            this.state.username,
+            this.state.password
+          );
+        })
+        .then(res => {
+          setStorageValue("authentication", res.accessToken);
+
+          const headers = {
+            Authorization: `Bearer ${res.accessToken}`
+          };
+          return get(GlobalConstants.USER_DATA_URL, headers);
+        })
+        .then(res => res.json())
+        .then(res => {
+          let userData = {
+            userId: res.sub,
+            userName: res.name
+          };
+          return this.props.userActions.setUser(userData);
+        })
+        .then(() => {
+          this.context.router.history.push("/");
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 
@@ -158,17 +180,17 @@ class Register extends React.Component {
                 />
                 <br />
                 {this.state.errors.confirmPassword && (
-                    <div className="text-danger">
-                        {this.state.errors.confirmPassword}
-                    </div>
+                  <div className="text-danger">
+                    {this.state.errors.confirmPassword}
+                  </div>
                 )}
                 <input
-                    type="password"
-                    onChange={this.onConfirmPasswordChange}
-                    id="confirm-password"
-                    className="form-control"
-                    placeholder="Confirm Password"
-                    value={this.state.confirmPassword}
+                  type="password"
+                  onChange={this.onConfirmPasswordChange}
+                  id="confirm-password"
+                  className="form-control"
+                  placeholder="Confirm Password"
+                  value={this.state.confirmPassword}
                 />
                 <br />
                 <button
@@ -191,4 +213,15 @@ Register.contextTypes = {
   router: PropTypes.object.isRequired
 };
 
-export default withRouter(Register);
+function mapDispatchToProps(dispatch) {
+  return {
+    userActions: bindActionCreators(userActions, dispatch)
+  };
+}
+
+export default withRouter(
+  connect(
+    null,
+    mapDispatchToProps
+  )(Register)
+);

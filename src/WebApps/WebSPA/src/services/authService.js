@@ -8,7 +8,7 @@ class AuthService {
       clientSecret: GlobalConstants.CLIENT_SECRET,
       accessTokenUri: `${GlobalConstants.API_URL}/connect/token`,
       authorizationUri: `${GlobalConstants.API_URL}/connect/authorize`,
-      scopes: ["openid", "profile", "offline_access"]
+      scopes: ["openid", "profile", "offline_access", "score"]
     });
   }
 

@@ -1,5 +1,9 @@
 const initialState = {
-    isLoading: false
+  isLoading: false,
+  user: {
+    userId: "",
+    userName: ""
+  }
 };
 
 export default initialState;

@@ -1,6 +1,9 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import SnakeGameEngine from "../../utils/snake";
+
+import ScoreApiServices from "./../../services/scoreApiService";
 
 const jumbotronStyles = {
   alignItems: "center"
@@ -9,13 +12,23 @@ const jumbotronStyles = {
 class StartGame extends React.Component {
   constructor() {
     super();
+    this.ScoreApiServices = new ScoreApiServices();
     this.state = {
       gamePaused: false,
-      gameOver: false
+      gameOver: false,
+      scores: []
     };
   }
 
   componentDidMount() {
+    this.ScoreApiServices.getTopGameScores()
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          scores: res
+        });
+      });
+
     const snakeGameOptions = {
       gameOverCallback: this.gameOverCallback,
       foodsPerLevel: 5,
@@ -42,7 +55,22 @@ class StartGame extends React.Component {
   }
 
   gameOverCallback = () => {
-    this.setState({ gameOver: true });
+    this.setState({ gameOver: true }, () => {
+      this.ScoreApiServices.createGameScores({
+        UserEmail: this.props.user.userName,
+        UserId: this.props.user.userId,
+        highScore: this.snake.score
+      })
+        .then(res => {
+          return this.ScoreApiServices.getTopGameScores();
+        })
+        .then(res => res.json())
+        .then(res => {
+          this.setState({
+            scores: res
+          });
+        });
+    });
   };
 
   restartGame = () => {
@@ -73,7 +101,7 @@ class StartGame extends React.Component {
                 >
                   <h3 className="overlay-title">PAUSED</h3>
                   <button
-                    class="btn btn-default centered-button"
+                    className="btn btn-default centered-button"
                     id="resume-btn"
                     onClick={this.resumeGame}
                   >
@@ -90,7 +118,7 @@ class StartGame extends React.Component {
                 >
                   <h3 className="overlay-title">GAME OVER</h3>
                   <button
-                    class="btn btn-default centered-button"
+                    className="btn btn-default centered-button"
                     id="resume-btn"
                     onClick={this.restartGame}
                   >
@@ -112,6 +140,15 @@ class StartGame extends React.Component {
                   Left Food <span id="left-food">0</span>
                 </li>
               </ul>
+
+              <ul className="list-group">
+                {this.state.scores.map((item, index) => (
+                  <li key={index} className="list-group-item">
+                    <span>{item.userEmail}</span> :{" "}
+                    <span>{item.highScore}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
@@ -120,4 +157,13 @@ class StartGame extends React.Component {
   }
 }
 
-export default StartGame;
+function mapStateToProps(state) {
+  return {
+    user: state.user
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(StartGame);
