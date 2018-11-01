@@ -23,5 +23,5 @@ Simple Snake Game With a Fancy Name. !important My hosting infrastructure is fre
 
 # Code Architecture
 <p>
-<img src="core-architecture.png">
+<img src="code-architecture.png">
 <p>
