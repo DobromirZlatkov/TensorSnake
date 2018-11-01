@@ -143,6 +143,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "actions", "actions", "{BA0F
 		src\WebApps\WebSPA\src\actions\loadingActions.js = src\WebApps\WebSPA\src\actions\loadingActions.js
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{419E6C0E-6D36-48D6-ACC3-C15404943232}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TensorSnake.Services.Scores.Services.Data.Tests", "src\Services\Scores\Tests\TensorSnake.Services.Scores.Services.Data.Tests\TensorSnake.Services.Scores.Services.Data.Tests.csproj", "{5452DA1A-6E7E-4D51-982A-0AD7CBEF9816}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -223,6 +227,14 @@ Global
 		{CEE47AFE-F308-46A2-87A1-92E1AED7AE81}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CEE47AFE-F308-46A2-87A1-92E1AED7AE81}.Release|x64.ActiveCfg = Release|Any CPU
 		{CEE47AFE-F308-46A2-87A1-92E1AED7AE81}.Release|x64.Build.0 = Release|Any CPU
+		{5452DA1A-6E7E-4D51-982A-0AD7CBEF9816}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5452DA1A-6E7E-4D51-982A-0AD7CBEF9816}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5452DA1A-6E7E-4D51-982A-0AD7CBEF9816}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5452DA1A-6E7E-4D51-982A-0AD7CBEF9816}.Debug|x64.Build.0 = Debug|Any CPU
+		{5452DA1A-6E7E-4D51-982A-0AD7CBEF9816}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5452DA1A-6E7E-4D51-982A-0AD7CBEF9816}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5452DA1A-6E7E-4D51-982A-0AD7CBEF9816}.Release|x64.ActiveCfg = Release|Any CPU
+		{5452DA1A-6E7E-4D51-982A-0AD7CBEF9816}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -259,6 +271,8 @@ Global
 		{B0166B7E-5370-447E-A04F-1AF95ADA6BED} = {8C8D6E46-8C8E-4CE5-920D-7ADD8F51571D}
 		{AD728A5C-D2F5-4A66-B726-D7D8073B2ECF} = {8C8D6E46-8C8E-4CE5-920D-7ADD8F51571D}
 		{BA0F783C-73DB-4576-8D8B-6065F7ED5816} = {8C8D6E46-8C8E-4CE5-920D-7ADD8F51571D}
+		{419E6C0E-6D36-48D6-ACC3-C15404943232} = {02B5512E-B5BD-487A-96E7-C1092D897711}
+		{5452DA1A-6E7E-4D51-982A-0AD7CBEF9816} = {419E6C0E-6D36-48D6-ACC3-C15404943232}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0106D7F1-2346-4E62-A2C5-CE432224A23A}
