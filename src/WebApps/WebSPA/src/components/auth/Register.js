@@ -92,10 +92,11 @@ class Register extends React.Component {
 
     let isFormValid = this.handleFormValidation();
     if (isFormValid) {
-      let body = new FormData();
-      body.append("email", this.state.username);
-      body.append("password", this.state.password);
-      body.append("confirmpassword", this.state.password);
+        let body = {
+            email: this.state.username,
+            password: this.state.password,
+            confirmpassword: this.state.password
+        };
       this.props.loadingActions.setLoading(true);
 
       authorizedFetch(GlobalConstants.REGISTER_URL, "POST", body)
