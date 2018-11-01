@@ -125,6 +125,24 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Score.Data.Models", "src\Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Score.Data", "src\Services\Scores\Data\Score.Data\Score.Data.csproj", "{CEE47AFE-F308-46A2-87A1-92E1AED7AE81}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "store", "store", "{B0166B7E-5370-447E-A04F-1AF95ADA6BED}"
+	ProjectSection(SolutionItems) = preProject
+		src\WebApps\WebSPA\src\store\configureStore.js = src\WebApps\WebSPA\src\store\configureStore.js
+		src\WebApps\WebSPA\src\store\initialState.js = src\WebApps\WebSPA\src\store\initialState.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "reducers", "reducers", "{AD728A5C-D2F5-4A66-B726-D7D8073B2ECF}"
+	ProjectSection(SolutionItems) = preProject
+		src\WebApps\WebSPA\src\reducers\index.js = src\WebApps\WebSPA\src\reducers\index.js
+		src\WebApps\WebSPA\src\reducers\loadingReducer.js = src\WebApps\WebSPA\src\reducers\loadingReducer.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "actions", "actions", "{BA0F783C-73DB-4576-8D8B-6065F7ED5816}"
+	ProjectSection(SolutionItems) = preProject
+		src\WebApps\WebSPA\src\actions\actionTypes.js = src\WebApps\WebSPA\src\actions\actionTypes.js
+		src\WebApps\WebSPA\src\actions\loadingActions.js = src\WebApps\WebSPA\src\actions\loadingActions.js
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -238,6 +256,9 @@ Global
 		{6E617976-DFEF-4670-BEA1-28B99A276ACA} = {6DCAEBEC-E600-4B51-B2B8-2DBF78824321}
 		{3A20E0D8-879D-474C-A04F-DF9357471F12} = {6DCAEBEC-E600-4B51-B2B8-2DBF78824321}
 		{CEE47AFE-F308-46A2-87A1-92E1AED7AE81} = {6DCAEBEC-E600-4B51-B2B8-2DBF78824321}
+		{B0166B7E-5370-447E-A04F-1AF95ADA6BED} = {8C8D6E46-8C8E-4CE5-920D-7ADD8F51571D}
+		{AD728A5C-D2F5-4A66-B726-D7D8073B2ECF} = {8C8D6E46-8C8E-4CE5-920D-7ADD8F51571D}
+		{BA0F783C-73DB-4576-8D8B-6065F7ED5816} = {8C8D6E46-8C8E-4CE5-920D-7ADD8F51571D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0106D7F1-2346-4E62-A2C5-CE432224A23A}

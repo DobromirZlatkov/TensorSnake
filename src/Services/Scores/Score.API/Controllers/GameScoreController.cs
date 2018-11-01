@@ -29,16 +29,36 @@
         /// <returns></returns>
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(int page = 1, int pageSize = 10)
         {
-            // TODO add select
             var gameScoresList = await _gameScoreService
-                .GetAll()
-                .OrderBy(x => x.HighScore)
-                .Select(GameScoreViewModel.FromGameScoreViewModel)
-                .ToListAsync();
+               .GetAll()
+               .Skip((page - 1) * pageSize)
+               .Take(pageSize)
+               .OrderByDescending(x => x.HighScore)
+               .Select(GameScoreResponseViewModel.FromGameScore)
+               .ToListAsync();
 
             return Ok(gameScoresList);
+        }
+
+        /// <summary>
+        /// Post api/v1/[controller]/Create
+        /// </summary>
+        /// <param name="model">Requested data use to create new score model</param>
+        /// <returns>New score model</returns>
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody]GameScoreRequestViewModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var newGame = await this._gameScoreService.Create(model.UserId, model.UserEmail, model.HighScore);
+
+            return Ok(newGame);
         }
     }
 }

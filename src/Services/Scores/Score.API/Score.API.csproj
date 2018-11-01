@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
-    <RootNamespace>Score.Services.Catalog.API</RootNamespace>
+    <RootNamespace>TensorSnake.Services.Score.API</RootNamespace>
     <AssemblyName>Score.API</AssemblyName>
     <IsServiceFabricServiceProject>True</IsServiceFabricServiceProject>
     <DockerTargetOS>Linux</DockerTargetOS>
