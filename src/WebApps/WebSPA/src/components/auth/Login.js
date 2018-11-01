@@ -2,10 +2,6 @@ import React from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
-import { connect } from "react-redux";
-import { bindActionCreators } from 'redux';
-import * as loadingActions from '../../actions/loadingActions';
-
 import GlobalConstants from "../../utils/globalConstants";
 import AuthService from "../../services/authService";
 import { setStorageValue } from "../../services/storageService";
@@ -76,27 +72,27 @@ class Login extends React.Component {
     e.preventDefault();
 
     let isFormValid = this.handleFormValidation();
-      if (isFormValid) {
-        this.props.loadingActions.setLoading(true);
-          this.authService
-            .getAccessToken(this.state.username, this.state.password)
-            .then(res => {
-              setStorageValue("authentication", res.accessToken);
-                this.context.router.history.push("/start-game");
-                this.props.loadingActions.setLoading(false);
-            })
-            .catch(err => {
-              if (
-                err.body.error_description &&
-                err.body.error_description === GlobalConstants.LOGIN_RESPONSE_ERROR
-              ) {
-                let errors = { ...this.state.errors };
-                errors.username = "Username or password is incorrect";
-                this.setState({ errors });
-              }
-                this.props.loadingActions.setLoading(false);
-            });
-        }
+    if (isFormValid) {
+      this.authService
+        .getAccessToken(this.state.username, this.state.password)
+        .then(res => {
+          setStorageValue("authentication", res.accessToken);
+          this.context.router.history.push("/start-game");
+        })
+        .catch(err => {
+          if (
+            err.body.error_description &&
+            err.body.error_description === GlobalConstants.LOGIN_RESPONSE_ERROR
+          ) {
+            let errors = { ...this.state.errors };
+            errors.username = "Username or password is incorrect";
+            this.setState({ errors });
+          }
+        })
+        .then(res => {
+          this.authService.getUserInfo();
+        });
+    }
   }
 
   render() {
@@ -161,10 +157,4 @@ Login.contextTypes = {
   router: PropTypes.object.isRequired
 };
 
-function mapDispatchToProps(dispatch) {
-    return {
-        loadingActions: bindActionCreators(loadingActions, dispatch)
-    }
-}
-
-export default withRouter(connect(null, mapDispatchToProps)(Login));
+export default withRouter(Login);
