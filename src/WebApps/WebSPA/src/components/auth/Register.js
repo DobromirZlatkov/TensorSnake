@@ -20,11 +20,13 @@ class Register extends React.Component {
     this.state = {
       username: "",
       password: "",
+      confirmPassword: "",
       errors: {}
     };
 
     this.onUsernameChange = this.onUsernameChange.bind(this);
     this.onPasswordChange = this.onPasswordChange.bind(this);
+    this.onConfirmPasswordChange = this.onConfirmPasswordChange.bind(this);
     this.onRegister = this.onRegister.bind(this);
     this.handleFormValidation = this.handleFormValidation.bind(this);
     this.authService = new AuthService();
@@ -36,6 +38,10 @@ class Register extends React.Component {
 
   onPasswordChange(e) {
     this.setState({ password: e.target.value });
+  }
+
+  onConfirmPasswordChange(e) {
+    this.setState({ confirmPassword: e.target.value });
   }
 
   isEmailValid(email) {
@@ -63,6 +69,12 @@ class Register extends React.Component {
     if (!password || password.length < 6) {
       errors.password = "Password is too short";
       formIsValid = false;
+      }
+
+    const confirmPassword = this.state.confirmPassword;
+    if (confirmPassword !== password) {
+        errors.confirmPassword = "Passwords don't match";
+        formIsValid = false;
     }
 
     this.setState({ errors: errors });
@@ -144,7 +156,20 @@ class Register extends React.Component {
                   placeholder="Password"
                   value={this.state.password}
                 />
-
+                <br />
+                {this.state.errors.confirmPassword && (
+                    <div className="text-danger">
+                        {this.state.errors.confirmPassword}
+                    </div>
+                )}
+                <input
+                    type="password"
+                    onChange={this.onConfirmPasswordChange}
+                    id="confirm-password"
+                    className="form-control"
+                    placeholder="Confirm Password"
+                    value={this.state.confirmPassword}
+                />
                 <br />
                 <button
                   className="btn btn-primary"

@@ -53,7 +53,7 @@ class Navigation extends React.Component {
                             <span className="icon-bar"></span>
                         </button>
 
-                        <a className="navbar-brand" href="/start-game">Tensor Snake</a>
+                        <a className="navbar-brand" href="/">Tensor Snake</a>
                     </div>
                     {this.props.isAuthenticated
                     ? <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -61,9 +61,6 @@ class Navigation extends React.Component {
                             <li className="dropdown">
                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{this.state.email}
                                 <span className="caret"></span></a>
-                                <ul className="dropdown-menu">
-                                    <li><a href="#">Action</a></li>
-                                </ul>
                             </li>
                         </ul>
                     </div>
