@@ -4,12 +4,14 @@ import { bindActionCreators } from "redux";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
+import * as loadingActions from "../../actions/loadingActions";
 import * as userActions from "../../actions/userActions";
+import * as authActions from "../../actions/authActions";
 
 import AuthService from "../../services/authService";
 import GlobalConstants from "../../utils/globalConstants";
 import { setStorageValue } from "../../services/storageService";
-import { get, post } from "../../services/requestService";
+import { authorizedFetch } from "../../services/requestService";
 
 const jumbotronStyles = {
   minHeight: "100vh",
@@ -94,9 +96,11 @@ class Register extends React.Component {
       body.append("email", this.state.username);
       body.append("password", this.state.password);
       body.append("confirmpassword", this.state.password);
+      this.props.loadingActions.setLoading(true);
 
-      post(GlobalConstants.REGISTER_URL, body)
+      authorizedFetch(GlobalConstants.REGISTER_URL, "POST", body)
         .then(res => {
+          this.props.loadingActions.setLoading(false);
           if (res.status === 400) {
             let errors = { ...this.state.errors };
             errors.username = "User with that email already exists";
@@ -115,11 +119,8 @@ class Register extends React.Component {
         })
         .then(res => {
           setStorageValue("authentication", res.accessToken);
-
-          const headers = {
-            Authorization: `Bearer ${res.accessToken}`
-          };
-          return get(GlobalConstants.USER_DATA_URL, headers);
+          this.props.authActions.setIsAuthenticated(true);
+          return authorizedFetch(GlobalConstants.USER_DATA_URL, "GET");
         })
         .then(res => res.json())
         .then(res => {
@@ -215,7 +216,9 @@ Register.contextTypes = {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators(userActions, dispatch)
+    userActions: bindActionCreators(userActions, dispatch),
+    loadingActions: bindActionCreators(loadingActions, dispatch),
+    authActions: bindActionCreators(authActions, dispatch)
   };
 }
 

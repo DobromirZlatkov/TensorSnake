@@ -1,19 +1,7 @@
-import { getStorageValue } from "./storageService";
-
-export function get(url, headers = {}) {
-  return fetch(url, {
-    method: "GET",
-    headers: headers
-  });
-}
-
-export function post(url, body = {}, headers = {}) {
-  return fetch(url, {
-    method: "POST",
-    headers: headers,
-    body: body
-  });
-}
+import HttpStatus from "http-status-codes";
+import { getStorageValue, removeStorageKey } from "./storageService";
+import store from "../store/configureStore";
+import { setIsAuthenticated } from "../actions/authActions";
 
 export function authorizedFetch(url, method, body = {}, headers = {}) {
   const requestHeaders = Object.assign(headers, {
@@ -45,5 +33,14 @@ export function authorizedFetch(url, method, body = {}, headers = {}) {
     requestConfig.body = JSON.stringify(body);
   }
 
-  return fetch(url, requestConfig);
+  const response = fetch(url, requestConfig).then(res => {
+    if (res.status === HttpStatus.UNAUTHORIZED) {
+      removeStorageKey("authentication");
+      store().dispatch(setIsAuthenticated(false));
+      return Promise.reject(res);
+    }
+    return Promise.resolve(res);
+  });
+
+  return response;
 }

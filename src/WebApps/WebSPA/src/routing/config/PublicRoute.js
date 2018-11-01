@@ -1,14 +1,22 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
 
 const PublicRoute = props => {
-  const isAuthenticated = props.isAuthenticated;
-
-  if (isAuthenticated) {
+  if (props.isAuthenticated) {
     return <Redirect to="/start-game/" />;
   } else {
     return <Route {...props} />;
   }
 };
 
-export default PublicRoute;
+function mapStateToProps(state) {
+  return {
+    isAuthenticated: state.isAuthenticated
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(PublicRoute);

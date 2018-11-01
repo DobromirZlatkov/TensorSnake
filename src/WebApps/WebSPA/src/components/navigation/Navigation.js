@@ -53,7 +53,8 @@ class Navigation extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    user: state.user
+    user: state.user,
+    isAuthenticated: state.isAuthenticated
   };
 }
 

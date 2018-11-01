@@ -9,9 +9,10 @@ import { Provider } from "react-redux";
 import { createBrowserHistory } from "history";
 import { syncHistoryWithStore } from "react-router-redux";
 import { getStorageValue } from "./services/storageService";
-import { get, authorizedFetch } from "./services/requestService";
+import { authorizedFetch } from "./services/requestService";
 import GlobalConstants from "./utils/globalConstants";
 import { setUser } from "./actions/userActions";
+import { setIsAuthenticated } from "./actions/authActions";
 
 const store = configureStore();
 const history = syncHistoryWithStore(createBrowserHistory(), store);
@@ -26,6 +27,7 @@ if (token) {
         userName: res.name
       };
       store.dispatch(setUser(userData));
+      store.dispatch(setIsAuthenticated(true));
     });
 }
 

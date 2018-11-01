@@ -6,11 +6,12 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as loadingActions from "../../actions/loadingActions";
 import * as userActions from "../../actions/userActions";
+import * as authActions from "../../actions/authActions";
 
 import GlobalConstants from "../../utils/globalConstants";
 import AuthService from "../../services/authService";
 import { setStorageValue } from "../../services/storageService";
-import { get } from "../../services/requestService";
+import { authorizedFetch } from "../../services/requestService";
 
 const jumbotronStyles = {
   minHeight: "100vh",
@@ -84,11 +85,8 @@ class Login extends React.Component {
         .getAccessToken(this.state.username, this.state.password)
         .then(res => {
           setStorageValue("authentication", res.accessToken);
-
-          const headers = {
-            Authorization: `Bearer ${res.accessToken}`
-          };
-          return get(GlobalConstants.USER_DATA_URL, headers);
+          this.props.authActions.setIsAuthenticated(true);
+          return authorizedFetch(GlobalConstants.USER_DATA_URL, "GET");
         })
         .then(res => res.json())
         .then(res => {
@@ -181,7 +179,8 @@ Login.contextTypes = {
 function mapDispatchToProps(dispatch) {
   return {
     loadingActions: bindActionCreators(loadingActions, dispatch),
-    userActions: bindActionCreators(userActions, dispatch)
+    userActions: bindActionCreators(userActions, dispatch),
+    authActions: bindActionCreators(authActions, dispatch)
   };
 }
 
