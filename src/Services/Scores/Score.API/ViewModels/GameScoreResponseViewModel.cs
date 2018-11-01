@@ -2,16 +2,17 @@
 {
     using System;
     using System.Linq.Expressions;
+
     using TensorSnake.Services.Score.Data.Models;
 
-    public class GameScoreViewModel
+    public class GameScoreResponseViewModel
     {
-        public static Expression<Func<GameScoreViewModel, GameScore>> FromGameScoreViewModel
+        public static Expression<Func<GameScore, GameScoreResponseViewModel>> FromGameScore
         {
             get
             {
                 return
-                    gameScore => new GameScore
+                    gameScore => new GameScoreResponseViewModel
                     {
                         UserId = gameScore.UserId,
                         HighScore = gameScore.HighScore,
