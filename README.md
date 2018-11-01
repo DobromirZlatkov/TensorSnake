@@ -1,5 +1,5 @@
 # Tensor Snake
-Simple Snake Game With a Fancy Name. !important My hosting infrastructure is free so i am sleaping at the most of the time, so be patient with me ;]
+Simple Snake Game With a Fancy Name. !important My hosting infrastructure is free so I am sleeping at the most of the time, so please be patient with me.
 
 # Tools
 >**IDE:** Visual Studio Community - https://www.visualstudio.com/vs/community/
@@ -21,4 +21,7 @@ Simple Snake Game With a Fancy Name. !important My hosting infrastructure is fre
 
 >**Scores Api service:** http://tensor-snake-scores-api.herokuapp.com/
 
-
+# Code Architecture
+<p>
+<img src="code-architecture.png">
+<p>
